@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Raseela Resto | Digital Menu</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --------------------------------------------------
+           🎨 CSS VARIABLES & THEME
+        -------------------------------------------------- */
+        :root {
+            --primary-color: #e67e22; /* Appetizing Orange */
+            --secondary-color: #d35400; /* Darker Orange/Red */
+            --accent-green: #27ae60; /* Veg Green */
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --bg-color: #fdfbf7; /* Warm Paper Tone */
+            --card-bg: #ffffff;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px rgba(0,0,0,0.05);
+            --header-height: 60px;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Hind', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 80px; /* Space for footer/floating btn */
+        }
+
+        /* --------------------------------------------------
+           HEADER
+        -------------------------------------------------- */
+        .sticky-header {
+            background: #fff;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-name {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin: 0;
+        }
+
+        .brand-tagline {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        /* --------------------------------------------------
+           MAIN SECTIONS (ACCORDION W/ IMAGES)
+        -------------------------------------------------- */
+        .menu-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .main-section {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .section-header {
+            position: relative;
+            height: 100px; /* Main Section Height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Image Background Logic */
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease, filter 0.3s ease;
+            filter: brightness(0.6); /* Darken for readability */
+            z-index: 1;
+        }
+
+        .section-header.active .header-bg {
+            filter: brightness(0.4);
+            transform: scale(1.05); /* Subtle zoom when open */
+        }
+
+        .section-title {
+            position: relative;
+            z-index: 2;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            width: 100%;
+            text-align: center;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Chevron Icon */
+        .chevron {
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+        }
+        .section-header.active .chevron {
+            transform: rotate(180deg);
+        }
+
+        /* --------------------------------------------------
+           SECTION CONTENT & SUBSECTIONS
+        -------------------------------------------------- */
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background: #fff;
+        }
+
+        .subsection-container {
+            padding: 0 15px 15px 15px;
+        }
+
+        .subsection-title {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #fff3e0;
+            display: flex;
+            align-items: center;
+        }
+
+        /* --------------------------------------------------
+           MENU ITEMS
+        -------------------------------------------------- */
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .item-left {
+            flex: 1;
+            padding-right: 15px;
+        }
+
+        .item-name {
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--text-dark);
+            line-height: 1.3;
+        }
+
+        /* Veg Indicator */
+        .veg-icon {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 1px solid var(--accent-green);
+            padding: 2px;
+            margin-right: 6px;
+            vertical-align: middle;
+            margin-top: -3px;
+        }
+        .veg-icon::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-green);
+            border-radius: 50%;
+        }
+
+        .item-desc {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .item-price {
+            font-weight: 600;
+            color: var(--text-dark);
+            white-space: nowrap;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* --------------------------------------------------
+           BADGES (Chef Rec / Special)
+        -------------------------------------------------- */
+        .badge {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        .badge-chef {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .badge-special {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* --------------------------------------------------
+           FLOATING BUTTON
+        -------------------------------------------------- */
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25D366; /* WhatsApp Green */
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            text-decoration: none;
+            z-index: 1001;
+            font-size: 24px;
+        }
+
+        /* --------------------------------------------------
+           UTILITIES
+        -------------------------------------------------- */
+        .text-center { text-align: center; }
+        .mb-1 { margin-bottom: 5px; }
+        
+        /* Loading Animation Placeholder */
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-light);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="sticky-header">
+        <div>
+            <h1 class="brand-name">Raseela Resto</h1>
+            <p class="brand-tagline">Teekha | Meetha | Tangy</p>
+        </div>
+    </header>
+
+    <div id="menu-root" class="menu-container">
+        <div class="loading">Loading Menu...</div>
+    </div>
+
+    <a href="#" class="fab" aria-label="Chat on WhatsApp">
+        💬
+    </a>
+
+    <script>
+        // --------------------------------------------------
+        // 1. IMAGE CONFIGURATION
+        // Replace these URLs with your actual image paths in /images/sections/
+        // --------------------------------------------------
+        const sectionImages = {
+            "Beverages": "images/bevrages.png",
+            "Breakfast Specials": "images/breakfast.png",
+            "Café Quick Bites": "images/bites.jpeg",
+            "Kulcha Specials": "images/kulcha.jpg", // using generic indian bread
+            "Tandoori Snacks": "images/tandoori.jpeg",
+            "Value Combos & Thali": "images/thali.png",
+            "Chinese Special": "images/noodles.jpg",
+            "Indian Main Course": "images/indianmain.jpg",
+            "Seasonal Special Menu": "images/sagroti.jpg",
+            "Desserts": "images/cheesecake.jpg"
+        };
+
+        // --------------------------------------------------
+        // 2. MENU DATA (JSON)
+        // --------------------------------------------------
+        const menuData = [
+            {
+                title: "Beverages",
+                subsections: [
+                    {
+                        title: "Hot Beverages",
+                        items: [
+                            { name: "Masala Chai", price: "39" },
+                            { name: "Ginger Lemon Honey Tea", price: "79" },
+                            { name: "Kashmiri Kehwa", price: "79" },
+                            { name: "Lemon Kehwa", price: "99" },
+                            { name: "Hot Coffee", price: "89" },
+                            { name: "Hot Chocolate Milk", price: "99" }
+                        ]
+                    },
+                    {
+                        title: "Cold Beverages ⭐",
+                        items: [
+                            { name: "Water Bottle", price: "29" },
+                            { name: "Cold Drink (250 ml)", price: "29" },
+                            { name: "Lime Soda", price: "89" },
+                            { name: "Masala Coke", price: "89" },
+                            { name: "Masala Lemonade", price: "89" },
+                            { name: "Kala Khatta Lemonade", price: "99" },
+                            { name: "Ice Tea (Lemon / Peach)", price: "99" },
+                            { name: "Lassi (Sweet / Salt)", price: "89" },
+                            { name: "Cold Coffee", price: "119" },
+                            { name: "Cold Coffee with Ice Cream", price: "139" }
+                        ]
+                    },
+                    {
+                        title: "Mocktails",
+                        items: [
+                            { name: "Classic Mojito", price: "129" },
+                            { name: "Blue Lagoon", price: "129" }
+                        ]
+                    },
+                    {
+                        title: "Shakes / Thick Shakes",
+                        items: [
+                            { name: "Strawberry Shake", price: "109" },
+                            { name: "Chocolate Shake", price: "109" },
+                            { name: "Black Currant Shake", price: "119" },
+                            { name: "Oreo Shake", price: "139" },
+                            { name: "Bubble Gum Shake", price: "149" },
+                            { name: "Extra Ice Cream (For Shake)", price: "49" }
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Breakfast Specials",
+                subsections: [
+                    {
+                        title: "Paratha Platters (Served with Curd)",
+                        items: [
+                            { name: "Aloo Paratha", price: "149" },
+                            { name: "Aloo Pyaz Paratha", price: "159" },
+                            { name: "Paneer Paratha", price: "169" }
+                        ]
+                    },
+                    {
+                        title: "Pav Specials",
+                        items: [
+                            { name: "Pav Bhaji", price: "149" },
+                            { name: "Cheese Pav Bhaji", price: "169" },
+                            { name: "Vada Pav", price: "69" },
+                            { name: "Extra Pav", price: "39" }
+                        ]
+                    },
+                    {
+                        title: "Sandwiches",
+                        items: [
+                            { name: "Veg Sandwich", price: "99" },
+                            { name: "Bombay Sandwich", price: "119" },
+                            { name: "Grill Sandwich with Fries", price: "149" },
+                            { name: "Grill Bombay Sandwich", price: "159" },
+                            { name: "Cheese Garlic Toast", price: "139" }
+                        ]
+                    },
+                    {
+                        title: "Indian Chaat (Street Style)",
+                        items: [
+                            { name: "Gol Gappe", price: "59" },
+                            { name: "Sev Puri", price: "89" },
+                            { name: "Bhel Puri", price: "109" },
+                            { name: "Dahi Puri", price: "119" },
+                            { name: "Chinese Bhel", price: "129" },
+                            { name: "Dahi Bhalla", price: "119" },
+                            { name: "Papri Chaat", price: "119" },
+                            { name: "Bhalla Papri Chaat", price: "119" },
+                            { name: "Aloo Chaat (Delhi Style)", price: "109" },
+                            { name: "Chana Aloo Chaat", price: "129" },
+                            { name: "Aloo Tikki", price: "99" },
+                            { name: "Aloo Tikki Chana", price: "109" },
+                            { name: "Raj Kachori", price: "129" }
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Café Quick Bites",
+                subsections: [
+                    {
+                        title: "MAGGI MASTI",
+                        items: [
+                            { name: "Plain Maggi", price: "69" },
+                            { name: "Veg Maggi", price: "79" },
+                            { name: "Cheese Maggi", price: "89", badge: "Chef Recommended" }
+                        ]
+                    },
+                    {
+                        title: "FRIES & CORN",
+                        items: [
+                            { name: "French Fries", price: "99" },
+                            { name: "Masala French Fries", price: "119" },
+                            { name: "Steamed Sweet Corn", price: "99" },
+                            { name: "Masala Sweet Corn", price: "109" },
+                            { name: "Peri Peri Sweet Corn", price: "119" }
+                        ]
+                    },
+                    {
+                        title: "ROLLS & BURGERS",
+                        items: [
+                            { name: "Soya Kathi Roll", price: "129" },
+                            { name: "Paneer Kathi Roll", price: "139" },
+                            { name: "Veg Burger (Served with Fries)", price: "109" },
+                            { name: "Veg Double Patty Burger", price: "139" }
+                        ]
+                    },
+                    {
+                        title: "Pizza (8” / 10”)",
+                        items: [
+                            { name: "Margherita Pizza", price: "199 / 249" },
+                            { name: "Onion & Capsicum Pizza", price: "219 / 279" },
+                            { name: "Farm House Pizza", price: "249 / 309" }
+                        ]
+                    },
+                    {
+                        title: "Pasta",
+                        items: [
+                            { name: "Red Sauce Pasta", price: "229" },
+                            { name: "White Sauce Pasta", price: "239" },
+                            { name: "Mix Sauce Pasta", price: "249" }
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Kulcha Specials",
+                subsections: [
+                    {
+                        title: "Plain & Kalari Kulcha",
+                        items: [
+                            { name: "Kalari Kulcha", price: "99" },
+                            { name: "Double Kalari Kulcha", price: "159" }
+                        ]
+                    },
+                    {
+                        title: "Bheega Kulcha",
+                        items: [
+                            { name: "Rajma Bheega Kulcha", price: "139" },
+                            { name: "Chole Bheega Kulcha", price: "139" }
+                        ]
+                    },
+                    {
+                        title: "Tandoori Kulcha (Served with Chana or Curd)",
+                        items: [
+                            { name: "Aloo Pyaz Kulcha", price: "149" },
+                            { name: "Mix Kulcha", price: "159" },
+                            { name: "Amritsari Kulcha (1 pc)", price: "169" },
+                            { name: "Paneer Kulcha", price: "179" },
+                            { name: "Extra Kulcha", price: "59" }
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Tandoori Snacks",
+                subsections: [
+                    {
+                        title: "Soya Chaap Special",
+                        items: [
+                            { name: "Tandoori Chaap (8 pcs)", price: "239" },
+                            { name: "Malai Chaap (8 pcs)", price: "249", badge: "Chef Recommended" },
+                            { name: "Afghani Chaap (8 pcs)", price: "259" },
+                            { name: "Masala Chaap Gravy", price: "219" }
+                        ]
+                    },
+                    {
+                        title: "Paneer Tikka Range",
+                        items: [
+                            { name: "Masala Paneer Tikka (8 pcs)", price: "279" },
+                            { name: "Achari Paneer Tikka (8 pcs)", price: "279" },
+                            { name: "Ajwain Paneer Tikka (8 pcs)", price: "289" },
+                            { name: "Malai Paneer Tikka (8 pcs)", price: "289" },
+                            { name: "Afghani Paneer Tikka (8 pcs)", price: "289", badge: "Rasela Special" }
+                        ]
+                    },
+                    {
+                        title: "Mushroom Special",
+                        items: [
+                            { name: "Masala Mushroom (10 pcs)", price: "249" },
+                            { name: "Achari Mushroom (10 pcs)", price: "249" }
+                        ]
+                    },
+                    {
+                        title: "Veg Tandoori Starters",
+                        items: [
+                            { name: "Veg Seekh Kabab", price: "259" },
+                            { name: "Veg Tandoori Platter", price: "459", badge: "Chef Recommended" }
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Value Combos & Thali",
+                subsections: [
+                    {
+                        title: "Value Combos",
+                        items: [
+                            { name: "Pav Bhaji & Cold Drink (250 ml)", price: "169" },
+                            { name: "Rajma Chawal & Cold Drink (250 ml)", price: "189" },
+                            { name: "Tawa Chaap Kulcha & Cold Drink (250 ml)", price: "179" },
+                            { name: "Chole Bhatura & Lassi (Sweet / Salt)", price: "239", badge: "Rasela Special" },
+                            { name: "Veg Manchurian with Fried Rice / Noodles & Cold Drink", price: "249" },
+                            { name: "Chilli Paneer with Fried Rice / Noodles & Cold Drink", price: "259" }
+                        ]
+                    },
+                    {
+                        title: "Veg Thali",
+                        items: [
+                            { name: "Veg Thali", desc: "Dal • Seasonal Sabzi • Raita • Salad • Rice • 2 Tawa Roti", price: "279" },
+                            { name: "Big Bite Thali", desc: "Dal • Paneer Curry • Veg Sabzi • Raita • Salad • Rice • 3 Roti", price: "299", badge: "Chef Recommended" },
+                            { name: "Special Veg Thali", desc: "Dal Makhani • Paneer Special • Seasonal Veg • Raita • Salad • Rice • 3 Butter Roti", price: "309", badge: "Rasela Special" }
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Chinese Special",
+                subsections: [
+                    {
+                        title: "Soups ⭐",
+                        items: [
+                            { name: "Veg Clear Soup", price: "129" },
+                            { name: "Lemon Coriander Soup", price: "139", badge: "Chef Recommended" },
+                            { name: "Manchow Soup", price: "139" },
+                            { name: "Veg Hot & Sour Soup", price: "139" },
+                            { name: "Tomato Cream Soup", price: "149" }
+                        ]
+                    },
+                    {
+                        title: "Chinese Snacks",
+                        items: [
+                            { name: "Veg Spring Roll", price: "149" },
+                            { name: "Honey Chilli Potato", price: "249", badge: "Rasela Special" },
+                            { name: "Crispy Corn", price: "249" },
+                            { name: "Veg Manchurian Dry", price: "249" },
+                            { name: "Chilli Mushroom Dry", price: "259" },
+                            { name: "Mushroom Duplex", price: "269", badge: "Chef Recommended" },
+                            { name: "Chilli Paneer Dry", price: "279", badge: "Chef Recommended" },
+                            { name: "Schezwan Paneer", price: "279" },
+                            { name: "Paneer 65", price: "279" }
+                        ]
+                    },
+                    {
+                        title: "Chinese Main Course",
+                        items: [
+                            { name: "Veg Noodles", price: "149" },
+                            { name: "Veg Hakka Noodles", price: "159" },
+                            { name: "Chilli Garlic Noodles", price: "169" },
+                            { name: "Schezwan Noodles", price: "169" },
+                            { name: "Paneer Noodles", price: "179" },
+                            { name: "Veg Fried Rice", price: "189" },
+                            { name: "Chilli Garlic Rice", price: "189" },
+                            { name: "Schezwan Rice", price: "199" },
+                            { name: "Triple Rice", price: "239", badge: "Rasela Special" },
+                            { name: "Veg Manchurian Gravy", price: "249" },
+                            { name: "Chilli Paneer Gravy", price: "279" },
+                            { name: "Lemon Cheese", price: "279" },
+                            { name: "Chilli Mushroom", price: "269" },
+                            { name: "Vegetable Hot Garlic", price: "259" }
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Indian Main Course",
+                subsections: [
+                    {
+                        title: "Dal & Curry Classics",
+                        items: [
+                            { name: "Dal Tadka", price: "209" },
+                            { name: "Dal Lasuni", price: "219" },
+                            { name: "Dal Makhani", price: "239", badge: "Chef Recommended" },
+                            { name: "Kadhi Pakoda", price: "219" },
+                            { name: "Chana Masala", price: "239" },
+                            { name: "Rajma Jammu Wale", price: "239", badge: "Rasela Special" },
+                            { name: "Veg Kofta", price: "229" },
+                            { name: "Mix Veg", price: "219" }
+                        ]
+                    },
+                    {
+                        title: "Aloo & Veg Specialties",
+                        items: [
+                            { name: "Jeera Aloo", price: "209" },
+                            { name: "Capsicum Aloo", price: "209" },
+                            { name: "Matar Aloo", price: "209" },
+                            { name: "Veg Keema Matar", price: "239" },
+                            { name: "Palak Lasuni", price: "239" }
+                        ]
+                    },
+                    {
+                        title: "Paneer Special",
+                        items: [
+                            { name: "Matar Paneer", price: "259" },
+                            { name: "Palak Paneer", price: "249" },
+                            { name: "Paneer Butter Masala", price: "299", badge: "Rasela Special" },
+                            { name: "Kadai Paneer", price: "299" },
+                            { name: "Paneer Do Pyaza", price: "299" },
+                            { name: "Paneer Lababdar", price: "299" },
+                            { name: "Paneer Bhurji", price: "309", badge: "Chef Recommended" }
+                        ]
+                    },
+                    {
+                        title: "Indian Breads",
+                        items: [
+                            { name: "Tawa Roti", price: "25" },
+                            { name: "Butter Tawa Roti", price: "35" },
+                            { name: "Tandoori Roti", price: "19" },
+                            { name: "Butter Tandoori Roti", price: "29" },
+                            { name: "Missi Roti", price: "39" },
+                            { name: "Lachha Parantha", price: "49" },
+                            { name: "Mirchi Parantha", price: "59" },
+                            { name: "Plain Naan", price: "39" },
+                            { name: "Butter Naan", price: "49" },
+                            { name: "Garlic Naan", price: "59" }
+                        ]
+                    },
+                    {
+                        title: "Rice / Dahi / Salad",
+                        items: [
+                            { name: "Plain Rice", price: "99" },
+                            { name: "Jeera Rice", price: "119" },
+                            { name: "Plain Curd (250 ml)", price: "69" },
+                            { name: "Boondi Raita", price: "89" },
+                            { name: "Mix Veg Raita", price: "99" },
+                            { name: "Green Salad", price: "89" },
+                            { name: "Papad (2 pcs)", price: "39" },
+                            { name: "Masala Papad (1 pc)", price: "59" }
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Seasonal Special Menu",
+                subsections: [
+                    {
+                        title: "Navratri Special",
+                        items: [
+                            { name: "Navratri Special Thali", price: "379", badge: "Rasela Special" },
+                            { name: "Vrat Wale Aloo", price: "219" },
+                            { name: "Vrat Paneer Makhani", price: "299" },
+                            { name: "Samak Ke Kheer (125 ml)", price: "129" },
+                            { name: "Sabudana Papad (2 pcs)", price: "69" }
+                        ]
+                    },
+                    {
+                        title: "Winter Special",
+                        items: [
+                            { name: "Sarson Ka Saag", price: "349", badge: "Chef Recommended" },
+                            { name: "Makki Ki Roti", price: "49" },
+                            { name: "Ghee & Gud", price: "Avail.", desc: "Served as per availability" }
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Desserts",
+                subsections: [
+                    {
+                        title: "Ice Cream Scoops",
+                        items: [
+                            { name: "Vanilla Ice Cream", price: "69" },
+                            { name: "Strawberry Ice Cream", price: "79" },
+                            { name: "Chocolate Ice Cream", price: "79" },
+                            { name: "Black Currant Ice Cream", price: "89" }
+                        ]
+                    },
+                    {
+                        title: "Cheese Cakes",
+                        items: [
+                            { name: "Blueberry Cheese Cake", price: "89" },
+                            { name: "Mango Cheese Cake", price: "89" },
+                            { name: "Strawberry Cheese Cake", price: "89" },
+                            { name: "Coffee Cheese Cake", price: "89", badge: "Chef Recommended" }
+                        ]
+                    },
+                    {
+                        title: "Indian Sweets",
+                        items: [
+                            { name: "Gulab Jamun (2 pcs)", price: "89" },
+                            { name: "Rabri", price: "109" },
+                            { name: "Rabri Gulab Jamun (1 pc)", price: "119", badge: "Rasela Special" },
+                            { name: "Shahi Tukda with Rabri", price: "129" },
+                            { name: "Lachha Kulfi (Seasonal)", price: "149" }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // --------------------------------------------------
+        // 3. RENDER LOGIC
+        // --------------------------------------------------
+        const root = document.getElementById('menu-root');
+
+        function renderMenu() {
+            root.innerHTML = '';
+
+            menuData.forEach((section, index) => {
+                // Create Main Section
+                const sectionEl = document.createElement('div');
+                sectionEl.className = 'main-section';
+
+                // Get Image URL or use a fallback color
+                const bgImage = sectionImages[section.title] ? `url('${sectionImages[section.title]}')` : 'none';
+                const bgColor = sectionImages[section.title] ? 'transparent' : 'var(--primary-color)';
+
+                // Create Header
+                const header = document.createElement('div');
+                header.className = 'section-header';
+                if(!sectionImages[section.title]) header.style.background = bgColor;
+
+                header.innerHTML = `
+                    <div class="header-bg" style="background-image: ${bgImage}"></div>
+                    <div class="section-title">
+                        ${section.title} <span class="chevron">▼</span>
+                    </div>
+                `;
+
+                // Create Content Container
+                const content = document.createElement('div');
+                content.className = 'section-content';
+
+                // Loop Subsections
+                section.subsections.forEach(sub => {
+                    const subDiv = document.createElement('div');
+                    subDiv.className = 'subsection-container';
+                    
+                    subDiv.innerHTML = `<h3 class="subsection-title">${sub.title}</h3>`;
+
+                    // Loop Items
+                    sub.items.forEach(item => {
+                        const badgeHtml = item.badge 
+                            ? `<span class="badge ${item.badge.includes('Chef') ? 'badge-chef' : 'badge-special'}">${item.badge.includes('Chef') ? 'Chef\'s Pick' : 'Special'}</span>` 
+                            : '';
+                        
+                        const descHtml = item.desc 
+                            ? `<div class="item-desc">${item.desc}</div>` 
+                            : '';
+
+                        const itemHtml = `
+                            <div class="menu-item">
+                                <div class="item-left">
+                                    <div class="item-name">
+                                        <span class="veg-icon"></span>
+                                        ${item.name}
+                                        ${badgeHtml}
+                                    </div>
+                                    ${descHtml}
+                                </div>
+                                <div class="item-price">₹${item.price}</div>
+                            </div>
+                        `;
+                        subDiv.insertAdjacentHTML('beforeend', itemHtml);
+                    });
+
+                    content.appendChild(subDiv);
+                });
+
+                // Assemble
+                sectionEl.appendChild(header);
+                sectionEl.appendChild(content);
+                root.appendChild(sectionEl);
+
+                // Add Click Event
+                header.addEventListener('click', () => {
+                    const isActive = header.classList.contains('active');
+                    
+                    // Close all others
+                    document.querySelectorAll('.section-header').forEach(h => h.classList.remove('active'));
+                    document.querySelectorAll('.section-content').forEach(c => c.style.maxHeight = null);
+
+                    // Toggle current
+                    if (!isActive) {
+                        header.classList.add('active');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        
+                        // Scroll into view logic (slight delay)
+                        setTimeout(() => {
+                            header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 300);
+                    }
+                });
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', renderMenu);
+
+    </script>
+</body>
+</html>
