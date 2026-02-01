@@ -14,16 +14,14 @@
            🎨 CSS VARIABLES & THEME
         -------------------------------------------------- */
         :root {
-            --primary-color: #e67e22; /* Appetizing Orange */
-            --secondary-color: #d35400; /* Darker Orange/Red */
-            --accent-green: #27ae60; /* Veg Green */
+            --primary-color: #e67e22;
+            --secondary-color: #d35400;
+            --accent-green: #27ae60;
             --text-dark: #2d3436;
             --text-light: #636e72;
-            --bg-color: #fdfbf7; /* Warm Paper Tone */
             --card-bg: #ffffff;
             --border-radius: 12px;
-            --shadow: 0 4px 6px rgba(0,0,0,0.05);
-            --header-height: 60px;
+            --shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         * {
@@ -33,48 +31,56 @@
 
         body {
             font-family: 'Hind', sans-serif;
-            background-color: var(--bg-color);
+            /* ✨ Dark Reddish-Black Gradient Body Background ✨ */
+            background: linear-gradient(135deg, #2b0505 0%, #000000 100%);
+            background-attachment: fixed;
             color: var(--text-dark);
             margin: 0;
             padding: 0;
-            padding-bottom: 80px; /* Space for footer/floating btn */
+            padding-bottom: 80px; 
+            min-height: 100vh;
         }
 
         /* --------------------------------------------------
-           HEADER
+           HEADER (FIXED FOR SIGNBOARD IMAGE) 🛠️
         -------------------------------------------------- */
         .sticky-header {
-            background: #fff;
-            padding: 15px 20px;
+            /* 👇 Image path: images/header.jpeg */
+            background-image: url('images/header.jpeg');
+            
+            /* Stretch to fit perfectly */
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            
+            /* Height adjusted for visibility */
+            height: 100px; 
+            width: 100%;
+            
+            padding: 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            background-color: #fff; /* Fallback */
         }
 
-        .brand-name {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--secondary-color);
-            margin: 0;
-        }
-
-        .brand-tagline {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            margin-top: 2px;
+        /* Text hidden because it's already in the photo */
+        .brand-name, .brand-tagline {
+            display: none; 
         }
 
         /* --------------------------------------------------
-           MAIN SECTIONS (ACCORDION W/ IMAGES)
+           MAIN SECTIONS
         -------------------------------------------------- */
         .menu-container {
             max-width: 600px;
-            margin: 20px auto;
+            margin: 25px auto;
             padding: 0 15px;
         }
 
@@ -84,12 +90,12 @@
             margin-bottom: 20px;
             overflow: hidden;
             box-shadow: var(--shadow);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: none;
         }
 
         .section-header {
             position: relative;
-            height: 100px; /* Main Section Height */
+            height: 110px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -98,7 +104,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Image Background Logic */
         .header-bg {
             position: absolute;
             top: 0;
@@ -108,25 +113,25 @@
             background-size: cover;
             background-position: center;
             transition: transform 0.5s ease, filter 0.3s ease;
-            filter: brightness(0.6); /* Darken for readability */
+            filter: brightness(0.55);
             z-index: 1;
         }
 
         .section-header.active .header-bg {
             filter: brightness(0.4);
-            transform: scale(1.05); /* Subtle zoom when open */
+            transform: scale(1.05);
         }
 
         .section-title {
             position: relative;
             z-index: 2;
-            color: #fff;
+            color: #ffffff;
             font-family: 'Poppins', sans-serif;
             font-size: 1.4rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 1.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
             width: 100%;
             text-align: center;
             pointer-events: none;
@@ -136,38 +141,41 @@
             gap: 10px;
         }
 
-        /* Chevron Icon */
         .chevron {
             transition: transform 0.3s ease;
             font-size: 1.2rem;
+            opacity: 0.9;
         }
         .section-header.active .chevron {
             transform: rotate(180deg);
         }
 
         /* --------------------------------------------------
-           SECTION CONTENT & SUBSECTIONS
+           SECTION CONTENT (LIGHT GRADIENT) 🎨
         -------------------------------------------------- */
         .section-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s ease-out;
-            background: #fff;
+            
+            /* ✨ New Light Gradient Background inside menu ✨ */
+            background: linear-gradient(to bottom, #ffffff 0%, #fff6e6 100%);
         }
 
         .subsection-container {
-            padding: 0 15px 15px 15px;
+            padding: 5px 20px 20px 20px;
         }
 
         .subsection-title {
             color: var(--secondary-color);
             font-size: 1.1rem;
             font-weight: 600;
-            margin: 20px 0 10px 0;
+            margin: 25px 0 15px 0;
             padding-bottom: 5px;
-            border-bottom: 2px solid #fff3e0;
+            border-bottom: 2px solid #ffccbc;
             display: flex;
             align-items: center;
+            letter-spacing: 0.5px;
         }
 
         /* --------------------------------------------------
@@ -177,7 +185,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
             position: relative;
         }
 
@@ -187,22 +195,22 @@
         }
 
         .item-name {
-            font-weight: 500;
+            font-weight: 600;
             font-size: 1rem;
-            color: var(--text-dark);
-            line-height: 1.3;
+            color: #2c3e50;
+            line-height: 1.35;
         }
 
-        /* Veg Indicator */
         .veg-icon {
             display: inline-block;
             width: 14px;
             height: 14px;
             border: 1px solid var(--accent-green);
             padding: 2px;
-            margin-right: 6px;
+            margin-right: 8px;
             vertical-align: middle;
             margin-top: -3px;
+            border-radius: 2px;
         }
         .veg-icon::after {
             content: '';
@@ -214,31 +222,33 @@
         }
 
         .item-desc {
-            font-size: 0.8rem;
-            color: var(--text-light);
+            font-size: 0.85rem;
+            color: #7f8c8d;
             margin-top: 4px;
-            font-style: italic;
         }
 
         .item-price {
-            font-weight: 600;
-            color: var(--text-dark);
+            font-weight: 700;
+            color: var(--secondary-color);
             white-space: nowrap;
             font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
         }
 
         /* --------------------------------------------------
-           BADGES (Chef Rec / Special)
+           BADGES
         -------------------------------------------------- */
         .badge {
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 5px;
+            font-size: 0.6rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 6px;
             font-weight: 700;
             text-transform: uppercase;
             vertical-align: middle;
             display: inline-block;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .badge-chef {
@@ -254,37 +264,43 @@
         }
 
         /* --------------------------------------------------
-           FLOATING BUTTON
+           REVIEW BUTTON
         -------------------------------------------------- */
-        .fab {
+        .fab-review {
             position: fixed;
-            bottom: 20px;
+            bottom: 25px;
             right: 20px;
-            background-color: #25D366; /* WhatsApp Green */
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FDB931);
+            color: #333;
+            height: 55px;
+            padding: 0 20px;
+            border-radius: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
             text-decoration: none;
             z-index: 1001;
-            font-size: 24px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            transition: transform 0.2s ease;
+            border: 2px solid #fff;
         }
 
-        /* --------------------------------------------------
-           UTILITIES
-        -------------------------------------------------- */
-        .text-center { text-align: center; }
-        .mb-1 { margin-bottom: 5px; }
-        
-        /* Loading Animation Placeholder */
+        .fab-review:active {
+            transform: scale(0.95);
+        }
+
+        .fab-icon {
+            font-size: 1.2rem;
+        }
+
         .loading {
             text-align: center;
             padding: 50px;
-            color: var(--text-light);
+            color: #fff;
+            font-weight: 500;
         }
 
     </style>
@@ -302,20 +318,20 @@
         <div class="loading">Loading Menu...</div>
     </div>
 
-    <a href="#" class="fab" aria-label="Chat on WhatsApp">
-        💬
+    <a href="https://www.google.com/maps/search/?api=1&query=Raseela+Resto" target="_blank" class="fab-review" aria-label="Leave a Review">
+        <span class="fab-icon">⭐</span>
+        <span>Rate Us</span>
     </a>
 
     <script>
         // --------------------------------------------------
-        // 1. IMAGE CONFIGURATION
-        // Replace these URLs with your actual image paths in /images/sections/
+        // IMAGE CONFIGURATION
         // --------------------------------------------------
         const sectionImages = {
             "Beverages": "images/bevrages.png",
             "Breakfast Specials": "images/breakfast.png",
             "Café Quick Bites": "images/bites.jpeg",
-            "Kulcha Specials": "images/kulcha.jpg", // using generic indian bread
+            "Kulcha Specials": "images/kulcha.jpg", 
             "Tandoori Snacks": "images/tandoori.jpeg",
             "Value Combos & Thali": "images/thali.png",
             "Chinese Special": "images/noodles.jpg",
@@ -325,7 +341,7 @@
         };
 
         // --------------------------------------------------
-        // 2. MENU DATA (JSON)
+        // MENU DATA
         // --------------------------------------------------
         const menuData = [
             {
@@ -741,7 +757,7 @@
         ];
 
         // --------------------------------------------------
-        // 3. RENDER LOGIC
+        // RENDER LOGIC
         // --------------------------------------------------
         const root = document.getElementById('menu-root');
 
@@ -749,15 +765,12 @@
             root.innerHTML = '';
 
             menuData.forEach((section, index) => {
-                // Create Main Section
                 const sectionEl = document.createElement('div');
                 sectionEl.className = 'main-section';
 
-                // Get Image URL or use a fallback color
                 const bgImage = sectionImages[section.title] ? `url('${sectionImages[section.title]}')` : 'none';
                 const bgColor = sectionImages[section.title] ? 'transparent' : 'var(--primary-color)';
 
-                // Create Header
                 const header = document.createElement('div');
                 header.className = 'section-header';
                 if(!sectionImages[section.title]) header.style.background = bgColor;
@@ -769,18 +782,15 @@
                     </div>
                 `;
 
-                // Create Content Container
                 const content = document.createElement('div');
                 content.className = 'section-content';
 
-                // Loop Subsections
                 section.subsections.forEach(sub => {
                     const subDiv = document.createElement('div');
                     subDiv.className = 'subsection-container';
                     
                     subDiv.innerHTML = `<h3 class="subsection-title">${sub.title}</h3>`;
 
-                    // Loop Items
                     sub.items.forEach(item => {
                         const badgeHtml = item.badge 
                             ? `<span class="badge ${item.badge.includes('Chef') ? 'badge-chef' : 'badge-special'}">${item.badge.includes('Chef') ? 'Chef\'s Pick' : 'Special'}</span>` 
@@ -809,25 +819,20 @@
                     content.appendChild(subDiv);
                 });
 
-                // Assemble
                 sectionEl.appendChild(header);
                 sectionEl.appendChild(content);
                 root.appendChild(sectionEl);
 
-                // Add Click Event
                 header.addEventListener('click', () => {
                     const isActive = header.classList.contains('active');
                     
-                    // Close all others
                     document.querySelectorAll('.section-header').forEach(h => h.classList.remove('active'));
                     document.querySelectorAll('.section-content').forEach(c => c.style.maxHeight = null);
 
-                    // Toggle current
                     if (!isActive) {
                         header.classList.add('active');
                         content.style.maxHeight = content.scrollHeight + "px";
                         
-                        // Scroll into view logic (slight delay)
                         setTimeout(() => {
                             header.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         }, 300);
@@ -836,9 +841,10 @@
             });
         }
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', renderMenu);
 
     </script>
 </body>
 </html>
+      
+     
